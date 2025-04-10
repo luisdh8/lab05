@@ -1,6 +1,9 @@
-//Z8TY1A2VJ8
-f e
-i g
-x = 14
-z = z / 28
-p l
+// basic code
+// float bf b
+// integer ai a
+// a = 5
+a = 5
+// b = a + 3.2
+b = a + 3.2
+// print 8.5
+p b
