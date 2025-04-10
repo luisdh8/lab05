@@ -18,8 +18,8 @@ i               { printf("intdcl\n"); fprintf(output, "intdcl\n"); }
 [0-9]+\.[0-9]+  { printf("fnum\n"); fprintf(output, "fnum\n"); }
 [0-9]+          { printf("inum\n"); fprintf(output, "inum\n"); }
 [a-eg-hj-oq-z]  { printf("id\n"); fprintf(output, "id\n"); }
-p               { printf("print\n"); fprintf(output, "print "); }
-\/              { printf("divide\n"); fprintf(output, "divide\n"); }    
+p               { printf("print\n"); fprintf(output, "print\n"); }
+\/              { printf("divide\n"); fprintf(output, "divide\n"); }
 \*              { printf("times\n"); fprintf(output, "times\n"); }
 \-              { printf("minus\n"); fprintf(output, "minus\n"); }
 
