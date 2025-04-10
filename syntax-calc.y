@@ -1,52 +1,101 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-int yylex();
+
+int yylex(void);
 void yyerror(const char *s) {
     printf("Error de sintaxis: %s\n", s);
 }
 %}
 
-%token COMMENT FLOATDCL INTDCL ASSIGN INUM FNUM ID PRINT PLUS MINUS TIMES DIVIDE
+/* Declaración de tokens (con todos los nombres que usa mi lexer) */
+%token COMMENT FLOATDCL INTDCL ASSIGN INUM FNUM ID PRINT
+%token PLUS MINUS TIMES DIVIDE
 
 %%
 
+/* La regla principal: */
 program:
     statement_list
     {
-        printf("Análisis exitoso.\n");
+        /* Imprime la cabecera del DOT y cierra el grafo */
+        printf("digraph G {\n");
+        printf("  program -> statement_list;\n");
+        printf("}\n");
     }
-;
+    ;
 
+/* Una lista de sentencias */
 statement_list:
-    statement_list statement
+      statement_list statement
+      {
+          printf("  statement_list -> statement;\n");
+      }
     | statement
-;
+      {
+          printf("  statement_list -> statement;\n");
+      }
+    ;
 
+/* Cada sentencia puede ser: */
 statement:
-    COMMENT { printf("Comentario detectado.\n"); }
-    | FLOATDCL ID { printf("Declaración de float: %s\n", $2); }
-    | INTDCL ID { printf("Declaración de int: %s\n", $2); }
-    | ID ASSIGN value { printf("Asignación: %s = %d\n", $1, $3); }
-    | PRINT ID { printf("Imprimir: %s\n", $2); }
-;
+      COMMENT
+      {
+          printf("  statement -> COMMENT;\n");
+      }
+    | FLOATDCL ID
+      {
+          printf("  statement -> FLOATDCL ID;\n");
+      }
+    | INTDCL ID
+      {
+          printf("  statement -> INTDCL ID;\n");
+      }
+    | ID ASSIGN value
+      {
+          printf("  statement -> ID ASSIGN value;\n");
+      }
+    | PRINT ID
+      {
+          printf("  statement -> PRINT ID;\n");
+      }
+    ;
 
+/* Definición de una expresión (valor) */
 value:
-    ID { printf("Valor (ID): %s\n", $1); }
-    | INUM { printf("Valor (INUM): %d\n", $1); }
-    | FNUM { printf("Valor (FNUM): %f\n", $1); }
-    | value operator value { printf("Operación: %d %s %d\n", $1, $2, $3); }
-;
-
-operator:
-    PLUS { printf("Operador: +\n"); }
-    | MINUS { printf("Operador: -\n"); }
-    | TIMES { printf("Operador: *\n"); }
-    | DIVIDE { printf("Operador: /\n"); }
-;
+      ID
+      {
+          printf("  value -> ID;\n");
+      }
+    | INUM
+      {
+          printf("  value -> INUM;\n");
+      }
+    | FNUM
+      {
+          printf("  value -> FNUM;\n");
+      }
+    | value PLUS value
+      {
+          printf("  value -> value PLUS value;\n");
+      }
+    | value MINUS value
+      {
+          printf("  value -> value MINUS value;\n");
+      }
+    | value TIMES value
+      {
+          printf("  value -> value TIMES value;\n");
+      }
+    | value DIVIDE value
+      {
+          printf("  value -> value DIVIDE value;\n");
+      }
+    ;
 
 %%
 
-int main() {
-    return yyparse();
+int main(void) {
+    yyparse();
+    return 0;
 }
