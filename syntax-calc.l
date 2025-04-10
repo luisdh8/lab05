@@ -3,21 +3,23 @@
 %}
 
 %%
-\/\/[^\/].*     { return COMMENT; }
-f               { return FLOATDCL; }
-i               { return INTDCL; }
-=               { return ASSIGN; }
-\+              { return PLUS; }
-\-              { return MINUS; }
-\*              { return TIMES; }
-\/              { return DIVIDE; }
-[0-9]+\.[0-9]+  { return FNUM; }
-[0-9]+          { return INUM; }
-[a-eg-hj-oq-z]  { return ID; }
-p               { return PRINT; }
-[ \t\n]+        ; // Ignora espacios
+
+"COMMENT"     { return COMMENT; }
+"floatdcl"    { return FLOATDCL; }
+"intdcl"      { return INTDCL; }
+"id"          { return ID; }
+"assign"      { return ASSIGN; }
+"inum"        { return INUM; }
+"fnum"        { return FNUM; }
+"print"       { return PRINT; }
+"plus"        { return PLUS; }
+"minus"       { return MINUS; }
+"times"       { return TIMES; }
+"divide"      { return DIVIDE; }
+
+[ \t\n]+      ; // Ignorar espacios, tabs y saltos de línea
+.             { return yytext[0]; }
+
 %%
 
-int yywrap(void) {
-    return 1;
-}
+int yywrap(void) { return 1; }
